@@ -5,7 +5,7 @@ Controller::Controller(int p_Buttonpin, int p_RedLightPin, int p_GreenLightPin){
     m_button = new Button(p_Buttonpin);
     m_RedDel = new DEL(p_RedLightPin);
     m_GreenDel = new DEL(p_GreenLightPin);
-
+    m_derniereDateChangement = 0;
     m_button->setFunction([this]() {
             Serial.println("#####| Function button |#####");
             String actif = "{\"etat\":\"actif\"}" ;
@@ -13,7 +13,6 @@ Controller::Controller(int p_Buttonpin, int p_RedLightPin, int p_GreenLightPin){
             String json = (this->m_ReactorStatus == "actif") ? repos : actif;
             Serial.println("Send: " + json + " to API");
             this->m_wifiManager->PutJsonToAPI(m_API, json);
-            getReactorStatus();
         });
 };
 
@@ -58,6 +57,16 @@ void Controller::updateReactorLightStatus(String p_status) {
         Serial.println(m_ReactorStatus);
     }
 }
+
+void Controller::checkForUpdateStatus(){
+    long dateActuelle = millis();
+    if(dateActuelle - m_derniereDateChangement > 5000 ) {
+        Serial.println("#####| Update | #####");
+        getReactorStatus();
+        m_derniereDateChangement = dateActuelle;
+        Serial.println("#####################");
+    }
+};
 
 void Controller::toggleReactorCore() {
     if(m_wifiManager->isConnected()) {

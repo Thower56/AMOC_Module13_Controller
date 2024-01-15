@@ -29,7 +29,7 @@ void Button::tick(){
         dernierEtatBouton = etatBouton;
     }
 
-    if(dateActuelle - derniereDateChangement > delaiMinPression && dateActuelle - derniereDateChangement < delaiMinPression*1000 ) {
+    if(dateActuelle - derniereDateChangement > delaiMinPression && dateActuelle - derniereDateChangement < delaiMinPression * 1000 ) {
         if (dernierEtatStableBouton == HIGH && etatBouton == LOW) {
             Serial.println("Click!");
             Serial.println("");

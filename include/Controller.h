@@ -11,8 +11,10 @@ public:
     void connectionToReactor(String p_ssid, String p_password, String p_API);
     void getReactorStatus();
     void updateReactorLightStatus(String p_status);
+    void checkForUpdateStatus();
     void toggleReactorCore();
 private:
+    int m_derniereDateChangement;
     String m_API;
     String m_ReactorStatus;
     Button* m_button;
